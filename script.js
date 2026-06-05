@@ -25,6 +25,7 @@ function makePageForEpisodes(episodeList) {
       <p>Season ${episode.season}, Episode ${episode.number}</p>
       <img src="${episode.image.medium}" alt="${episode.name}" />
       <div>${episode.summary}</div>
+      <p><a href="${episode.url}" target="_blank">Watch on TVMaze</a></p>
     `;
 
     rootElem.appendChild(episodeElem);
