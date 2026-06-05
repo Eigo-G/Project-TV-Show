@@ -4,13 +4,65 @@
 
 body {
   margin: 0;
-  background: #d8e2ea;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 26%, rgba(255, 255, 255, 0.7) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.55) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 42% 78%, rgba(255, 255, 255, 0.48) 0 1px, transparent 1.5px),
+    radial-gradient(ellipse at 18% 82%, rgba(255, 255, 255, 0.62) 0 12%, transparent 32%),
+    radial-gradient(ellipse at 84% 16%, rgba(238, 251, 255, 0.6) 0 10%, transparent 30%),
+    linear-gradient(145deg, #eefaff 0%, #b9dce9 46%, #e8f7fb 100%);
+  background-size: 17px 17px, 23px 23px, 31px 31px, auto, auto, auto;
+  background-attachment: fixed;
   color: #111827;
   font-family: Georgia, "Times New Roman", serif;
   line-height: 1.5;
 }
 
+body::before,
+body::after {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+}
+
+body::before {
+  z-index: 0;
+  opacity: 0.72;
+  background:
+    repeating-conic-gradient(from 20deg at 18% 24%, transparent 0 10deg, rgba(255, 255, 255, 0.82) 10deg 12deg, transparent 12deg 24deg),
+    repeating-conic-gradient(from 108deg at 76% 22%, transparent 0 12deg, rgba(255, 255, 255, 0.7) 12deg 14deg, transparent 14deg 28deg),
+    repeating-conic-gradient(from 252deg at 34% 70%, transparent 0 11deg, rgba(255, 255, 255, 0.68) 11deg 13deg, transparent 13deg 26deg),
+    repeating-conic-gradient(from 322deg at 84% 72%, transparent 0 13deg, rgba(255, 255, 255, 0.64) 13deg 15deg, transparent 15deg 30deg),
+    radial-gradient(ellipse at 18% 24%, rgba(255, 255, 255, 0.42) 0 13%, transparent 30%),
+    radial-gradient(ellipse at 76% 22%, rgba(255, 255, 255, 0.36) 0 12%, transparent 28%),
+    radial-gradient(ellipse at 34% 70%, rgba(255, 255, 255, 0.34) 0 14%, transparent 32%),
+    radial-gradient(ellipse at 84% 72%, rgba(255, 255, 255, 0.3) 0 13%, transparent 30%);
+  filter: blur(0.25px);
+  mask-image:
+    radial-gradient(ellipse at 18% 24%, black 0 24%, transparent 38%),
+    radial-gradient(ellipse at 76% 22%, black 0 22%, transparent 36%),
+    radial-gradient(ellipse at 34% 70%, black 0 25%, transparent 40%),
+    radial-gradient(ellipse at 84% 72%, black 0 22%, transparent 36%);
+  mask-composite: add;
+}
+
+body::after {
+  z-index: 0;
+  opacity: 0.66;
+  background:
+    repeating-linear-gradient(32deg, transparent 0 22px, rgba(255, 255, 255, 0.34) 23px 24px, transparent 25px 62px),
+    repeating-linear-gradient(148deg, transparent 0 28px, rgba(233, 250, 255, 0.32) 29px 30px, transparent 31px 74px),
+    radial-gradient(circle at 22% 48%, rgba(255, 255, 255, 0.74) 0 0.08rem, transparent 0.11rem),
+    radial-gradient(circle at 64% 58%, rgba(255, 255, 255, 0.62) 0 0.07rem, transparent 0.1rem),
+    radial-gradient(circle at 88% 34%, rgba(255, 255, 255, 0.68) 0 0.08rem, transparent 0.11rem);
+  background-size: auto, auto, 18px 18px, 26px 26px, 21px 21px;
+}
+
 #root {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
@@ -22,16 +74,18 @@ body {
 #root > p {
   grid-column: 1 / -1;
   margin: 0;
-  color: #334155;
+  color: #254b5f;
   font-size: 1rem;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 section {
   overflow: hidden;
-  background: #f8fbff;
-  border: 2px solid #64748b;
+  background: rgba(248, 252, 255, 0.9);
+  border: 1px solid rgba(112, 156, 176, 0.64);
   border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+  box-shadow: 0 12px 32px rgba(20, 61, 82, 0.2);
+  backdrop-filter: blur(8px);
 }
 
 section h2 {
