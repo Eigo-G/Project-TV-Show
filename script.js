@@ -1,7 +1,14 @@
+const EPISODES_URL = "https://api.tvmaze.com/shows/82/episodes";
+
 function getEpisodeCode(episode) {
   const season = String(episode.season).padStart(2, "0");
   const number = String(episode.number).padStart(2, "0");
   return `S${season}E${number}`;
+}
+
+function showMessage(message, className) {
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = `<p class="${className}">${message}</p>`;
 }
 
 function renderEpisodes(episodeList) {
@@ -37,6 +44,7 @@ function filterEpisodes(allEpisodes, searchTerm) {
 
 function createSearchUI(allEpisodes) {
   const controls = document.getElementById("controls");
+  controls.innerHTML = "";
 
   const searchLabel = document.createElement("label");
   searchLabel.setAttribute("for", "search-input");
@@ -102,11 +110,32 @@ function createEpisodeSelector(allEpisodes) {
   });
 }
 
-function setup() {
-  const allEpisodes = getAllEpisodes();
-  renderEpisodes(allEpisodes);
-  createSearchUI(allEpisodes);
-  createEpisodeSelector(allEpisodes);
+async function fetchEpisodes() {
+  const response = await fetch(EPISODES_URL);
+
+  if (!response.ok) {
+    throw new Error("Could not load episodes");
+  }
+
+  return response.json();
+}
+
+async function setup() {
+  showMessage("Loading episodes...", "status-message");
+
+  try {
+    const allEpisodes = await fetchEpisodes();
+    renderEpisodes(allEpisodes);
+    createSearchUI(allEpisodes);
+    createEpisodeSelector(allEpisodes);
+  } catch (error) {
+    const controls = document.getElementById("controls");
+    controls.innerHTML = "";
+    showMessage(
+      "Sorry, something went wrong while loading the episodes. Please try again later.",
+      "error-message"
+    );
+  }
 }
 
 window.onload = setup;
