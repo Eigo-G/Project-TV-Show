@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | Michael English (Eigo-G) </title>
-    <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  </head>
 
-  <body>
-    <main>
-      <div id="controls"> </div>
-      <div id="root">
-      </div>
-    </main>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TV Show Project | Michael English(Eigo-G)</title>
+  <link href="style.css" rel="stylesheet" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+</head>
 
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
-  </body>
+<body>
+  <header>
+    <h1>TV Shows</h1>
+    <nav>
+      <a href="#" id="back-to-shows">Back to shows</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="shows-view">
+      <input type="search" id="show-search" placeholder="Search shows..."
+        aria-label="Search shows by name, genre or summary" />
+      <p id="show-count" aria-live="polite"></p>
+      <div id="shows-listing"></div>
+    </div>
+
+    <div id="episodes-view" hidden>
+      <div id="controls"></div>
+      <div id="root"></div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
 </html>
