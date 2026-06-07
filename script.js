@@ -1,3 +1,5 @@
+const episodeCache = {};
+
 function getEpisodeCode(episode) {
   const season = String(episode.season).padStart(2, "0");
   const number = String(episode.number).padStart(2, "0");
@@ -37,6 +39,7 @@ function filterEpisodes(allEpisodes, searchTerm) {
 
 function createSearchUI(allEpisodes) {
   const controls = document.getElementById("controls");
+  controls.innerHTML = "";
 
   const searchLabel = document.createElement("label");
   searchLabel.setAttribute("for", "search-input");
@@ -102,11 +105,91 @@ function createEpisodeSelector(allEpisodes) {
   });
 }
 
-function setup() {
-  const allEpisodes = getAllEpisodes();
-  renderEpisodes(allEpisodes);
-  createSearchUI(allEpisodes);
-  createEpisodeSelector(allEpisodes);
+function showLoadingMessage() {
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = "<p>Loading episodes, please wait...</p>";
+}
+
+function showErrorMessage() {
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = "<p>Something went wrong loading the episodes. Please try refreshing the page.</p>";
+}
+
+async function fetchEpisodes(showId) {
+  if (episodeCache[showId]) {
+    return episodeCache[showId];
+  }
+  const response = await fetch(`https://api.tvmaze.com/shows/${showId}/episodes`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch episodes");
+  }
+  const episodes = await response.json();
+  episodeCache[showId] = episodes;
+  return episodes;
+}
+
+async function fetchShows() {
+  const response = await fetch("https://api.tvmaze.com/shows");
+  if (!response.ok) {
+    throw new Error("Failed to fetch shows");
+  }
+  return response.json();
+}
+
+function createShowSelector(shows) {
+  const header = document.querySelector("header");
+
+  const showSelectLabel = document.createElement("label");
+  showSelectLabel.setAttribute("for", "show-select");
+  showSelectLabel.textContent = "Select a show: ";
+
+  const showSelect = document.createElement("select");
+  showSelect.id = "show-select";
+  showSelect.setAttribute("aria-label", "Select a TV show");
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "-- Select a show --";
+  showSelect.appendChild(defaultOption);
+
+  const sortedShows = [...shows].sort((a, b) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  );
+
+  sortedShows.forEach((show) => {
+    const option = document.createElement("option");
+    option.value = show.id;
+    option.textContent = show.name;
+    showSelect.appendChild(option);
+  });
+
+  header.appendChild(showSelectLabel);
+  header.appendChild(showSelect);
+
+  showSelect.addEventListener("change", async () => {
+    const showId = showSelect.value;
+    if (!showId) return;
+    showLoadingMessage();
+    try {
+      const episodes = await fetchEpisodes(showId);
+      renderEpisodes(episodes);
+      createSearchUI(episodes);
+      createEpisodeSelector(episodes);
+    } catch (error) {
+      showErrorMessage();
+    }
+  });
+}
+
+async function setup() {
+  showLoadingMessage();
+  try {
+    const shows = await fetchShows();
+    createShowSelector(shows);
+    document.getElementById("root").innerHTML = "<p>Please select a show to get started.</p>";
+  } catch (error) {
+    showErrorMessage();
+  }
 }
 
 window.onload = setup;
