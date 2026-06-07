@@ -79,6 +79,20 @@ body::after {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
+.status-message,
+.error-message {
+  padding: 18px;
+  background: rgba(248, 252, 255, 0.9);
+  border: 1px solid rgba(112, 156, 176, 0.64);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(20, 61, 82, 0.2);
+}
+
+.error-message {
+  color: #8f0712;
+  font-weight: 700;
+}
+
 section {
   overflow: hidden;
   background: rgba(248, 252, 255, 0.9);
